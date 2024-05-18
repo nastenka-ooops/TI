@@ -189,7 +189,7 @@ public class Main extends Application {
 
                     int sign = Integer.parseInt(input.substring(start + sighStart.length(), end));
 
-                    int e = logic.EEA(eulerFunction, d)[1];
+                    int e = logic.checkD(p,q,d);
                     if (e < 0) {
                         e += eulerFunction;
                     }

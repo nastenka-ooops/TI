@@ -4,26 +4,38 @@ import java.math.BigInteger;
 
 public class Logic {
 
-    public int[] EEA(int a, int b)
-    {
-        // Исходные значения для уравнения ax + by = НОД(a, b)
-        int x0 = 1, y0 = 0;
-        int x1 = 0, y1 = 1;
+        public static int extendedGCD(int a, int b, int[] xy) {
+            if (a == 0) {
+                xy[0] = 0;
+                xy[1] = 1;
+                return b;
+            }
 
-        while (b != 0)
-        {
-            int q = a / b;
-            int temp = b;
-            b = a % b;
-            a = temp;
+            int[] xy1 = new int[2];
+            int gcd = extendedGCD(b % a, a, xy1);
 
-            int xx = x0 - q * x1;
-            int yy = y0 - q * y1;
-            x0 = x1; y0 = y1;
-            x1 = xx; y1 = yy;
+            xy[0] = xy1[1] - (b / a) * xy1[0];
+            xy[1] = xy1[0];
+
+            return gcd;
         }
-        return new int[]{a, x0, x1};
-    }
+
+        public static int checkD(int p, int q, int d) {
+            int r = p * q; // Вычисляем произведение p и q
+            int phiR = (p - 1) * (q - 1); // Вычисляем значение функции Эйлера для r
+
+            int e;
+            int[] xy = new int[2];
+            for (e = 2; e < phiR; e++) {
+                if (extendedGCD(e, phiR, xy) == 1) {
+                    boolean isCorrect = (e * d) % phiR == 1;
+                    if (isCorrect) {
+                        return e;
+                    }
+                }
+            }
+            return -30; // Проверяем условие e * d ≡ 1 (mod φ(r))
+        }
 
     public boolean isPrimeNumber(int number) {
         BigInteger bigInteger = BigInteger.valueOf(number);
